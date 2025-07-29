@@ -12,10 +12,10 @@ sudo apt update
 sudo apt install xmake
 ```
 
-Additionally, please ensure that the `pkg-config` tool is installed. Because `xmake` needs to use `pkg-config` to obtain configuration information for dependency libraries.
+Additionally, please ensure that the `pkg-config` and `autoconf` tools are installed. Because `xmake` needs to use `pkg-config` to obtain configuration information for dependency libraries.
 
 ```bash
-sudo apt install pkg-config
+sudo apt install pkg-config autoconf
 ```
 
 ### 🐧 Arch Linux
