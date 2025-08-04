@@ -9,7 +9,6 @@
  */
 #include "protocol/http/http_server_session.hpp"
 #include "base/network/socket_interface.hpp"
-#include "spdlog/spdlog.h"
 #include "base/thread/thread_worker.hpp"
 using namespace mms;
 
@@ -102,7 +101,7 @@ boost::asio::awaitable<void> HttpServerSession::cycle_recv() {
         }
 
         buf_size_ += recv_size;   
-        std::tie(cont, consumed) = co_await parse_recv_buf((const char*)buf_, buf_size_);
+        auto [cont, consumed] = co_await parse_recv_buf((const char*)buf_, buf_size_);
         if (consumed < 0) {
             stop();
             co_return;
@@ -127,16 +126,16 @@ boost::asio::awaitable<std::pair<bool,int32_t>> HttpServerSession::parse_recv_bu
     do {
         consumed = co_await http_parser_.read(std::string_view(buf + total_consumed, len));
         if (consumed < 0) {
-            co_return std::make_pair(false, -1);
+            co_return std::pair{false, -1};
         }
         total_consumed += consumed;
         len -= consumed;
         if (is_websocket_) {
-            co_return std::make_pair(false, total_consumed);
+            co_return std::pair{false, total_consumed};
         }
     } while(consumed > 0 && len > 0);
 
-    co_return std::make_pair(true, total_consumed);
+    co_return std::pair{true, total_consumed};
 }
 
 void HttpServerSession::on_http_request(std::shared_ptr<HttpRequest> req) {
