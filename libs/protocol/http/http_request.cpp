@@ -240,12 +240,20 @@ int32_t HttpRequest::parse_body(const char *buf, size_t len) {
         return len;
     } else {
         try {
-            auto icontent_len = std::atoi(content_len.c_str());
-            if (len < (size_t)icontent_len) {
-                return 0;
+            auto icontent_len = std::stoi(content_len);
+            auto remaining_len = icontent_len - body_.size();
+
+            if (remaining_len <=0) {
+                return 0; // body 已经完整
             }
-            body_.append(buf, len);
-            return len;
+
+            if (len < static_cast<size_t>(remaining_len)) {
+                body_.append(buf, len);
+                return len; // body 不完整, 需要更多
+            } else {
+                body_.append(buf, remaining_len);
+                return remaining_len; // body 已经完整
+            }
         } catch (std::exception & exp) {
             return -2;
         }

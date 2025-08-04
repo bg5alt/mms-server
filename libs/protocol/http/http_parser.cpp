@@ -33,6 +33,7 @@ boost::asio::awaitable<int32_t> HttpParser::read(const std::string_view & buf) {
                         co_return pos + 2;
                     } else {
                         if (http_req_->get_header("Content-Length") == "") {
+                            state_ = HTTP_STATE_WAIT_REQUEST_LINE;
                             req_cb_(http_req_);
                             co_return pos + 2;
                         } 
@@ -60,8 +61,25 @@ boost::asio::awaitable<int32_t> HttpParser::read(const std::string_view & buf) {
                     state_ = HTTP_STATE_REQUEST_ERROR;
                     co_return -5;
                 }
-                req_cb_(std::move(http_req_));
-                state_ = HTTP_STATE_WAIT_REQUEST_LINE;
+
+                // 检查 body 是否完整
+                auto content_len{http_req_->get_header("Content-Length")};
+                bool body_complete{false};
+                if (content_len.empty()) {
+                    body_complete = true; // 没有 Content-Length 说明没有 body
+                } else {
+                    try {
+                        auto icontent_len = std::stoi(content_len);
+                        body_complete = (http_req_->get_body().size() >= static_cast<size_t>(icontent_len));
+                    } catch (std::exception & e) {
+                        state_ = HTTP_STATE_REQUEST_ERROR;
+                        co_return -3;
+                    }
+                }
+                if (body_complete) {
+                    req_cb_(std::move(http_req_));
+                    state_ = HTTP_STATE_WAIT_REQUEST_LINE;
+                }
                 co_return consumed;
             } catch(std::exception & e) {
                 co_return -4;
