@@ -9,7 +9,7 @@ ExternalProject_Add(libspdlog
     GIT_TAG v1.14.0
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -j4 -C build 
+    BUILD_COMMAND make -j$(nproc) -C build 
     INSTALL_COMMAND make -C build install
 )
 
@@ -29,7 +29,7 @@ ExternalProject_Add(libleveldb
     GIT_SUBMODULES ""
     GIT_SHALLOW FALSE
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=17 -DLEVELDB_BUILD_TESTS=OFF -DLEVELDB_BUILD_TESTS=OFF -DLEVELDB_BUILD_BENCHMARKS=OFF -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -C build -j4
+    BUILD_COMMAND make -j$(nproc) -C build
     INSTALL_COMMAND make -C build install
 )
 
@@ -49,8 +49,8 @@ ExternalProject_Add(libyamlcpp
     URL https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.7.0.tar.gz
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake -B build -DYAML_CPP_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -C build  -j4
-    INSTALL_COMMAND make -C build install -j4
+    BUILD_COMMAND make -j$(nproc) -C build
+    INSTALL_COMMAND make -C build install
 )
 
 ExternalProject_Add(libjsoncpp
@@ -58,8 +58,8 @@ ExternalProject_Add(libjsoncpp
     URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.8.4.tar.gz
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -C build -j4
-    INSTALL_COMMAND make -C build install -j4
+    BUILD_COMMAND make -j$(nproc) -C build
+    INSTALL_COMMAND make -C build install
 )
 
 ExternalProject_Add(libboringssl
@@ -67,8 +67,8 @@ ExternalProject_Add(libboringssl
     GIT_REPOSITORY https://github.com/google/boringssl.git
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-overflow" -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -C build -j4
-    INSTALL_COMMAND make -C build install -j4
+    BUILD_COMMAND make -j$(nproc) -C build
+    INSTALL_COMMAND make -C build install
 )
 
 INCLUDE_DIRECTORIES(${MMS_SOURCE_DIR}/third_src/spdlog/include)
@@ -79,8 +79,8 @@ ExternalProject_Add(libzlib
     GIT_REPOSITORY https://github.com/madler/zlib.git
     GIT_TAG v1.2.13
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -C build -j4
-    INSTALL_COMMAND make -C build install -j4
+    BUILD_COMMAND make -j$(nproc) -C build
+    INSTALL_COMMAND make -C build install
 )
 
 ExternalProject_Add(libopus
@@ -88,8 +88,8 @@ ExternalProject_Add(libopus
     URL https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./configure --prefix=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -j4
-    INSTALL_COMMAND make -j4 install
+    BUILD_COMMAND make -j$(nproc)
+    INSTALL_COMMAND make install
 )
 
 ExternalProject_Add(libaac
@@ -97,8 +97,8 @@ ExternalProject_Add(libaac
     GIT_REPOSITORY https://github.com/knik0/faac.git
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./bootstrap --prefix=${PROJECT_BINARY_DIR} && ./configure --prefix=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -j4
-    INSTALL_COMMAND make -j4 install
+    BUILD_COMMAND make -j$(nproc)
+    INSTALL_COMMAND make install
 )
 
 ExternalProject_Add(libfaad2
@@ -106,7 +106,7 @@ ExternalProject_Add(libfaad2
     GIT_REPOSITORY https://github.com/knik0/faad2.git
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake . -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR} -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
-    BUILD_COMMAND make -j4
+    BUILD_COMMAND make -j$(nproc)
     INSTALL_COMMAND make install
 )
 
@@ -116,7 +116,7 @@ ExternalProject_Add(libav-5.1.4
     GIT_TAG n5.1.4
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./configure --disable-programs --prefix=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -j4
+    BUILD_COMMAND make -j$(nproc)
     INSTALL_COMMAND make install
 )
 
@@ -125,8 +125,9 @@ ExternalProject_Add(libsrtp
     URL https://github.com/cisco/libsrtp/archive/refs/tags/v2.4.2.tar.gz
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./configure --prefix=${PROJECT_BINARY_DIR}
-    BUILD_COMMAND make -j4
+    BUILD_COMMAND make -j$(nproc)
     INSTALL_COMMAND make install
 )
+
 
 
