@@ -5,7 +5,7 @@ link_directories(${PROJECT_BINARY_DIR}/lib64)
 
 ExternalProject_Add(libspdlog
     EXCLUDE_FROM_ALL 1
-    GIT_REPOSITORY https://gitee.com/jbl19860422/spdlog.git
+    GIT_REPOSITORY https://github.com/gabime/spdlog.git
     GIT_TAG v1.14.0
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
@@ -28,7 +28,7 @@ ExternalProject_Add(libleveldb
     GIT_TAG 1.23
     GIT_SUBMODULES ""
     GIT_SHALLOW FALSE
-    CONFIGURE_COMMAND cmake -S ../libleveldb -B build -DCMAKE_BUILD_TYPE=Release -DLEVELDB_BUILD_TESTS=OFF -DLEVELDB_BUILD_TESTS=OFF -DLEVELDB_BUILD_BENCHMARKS=OFF -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
+    CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=17 -DLEVELDB_BUILD_TESTS=OFF -DLEVELDB_BUILD_TESTS=OFF -DLEVELDB_BUILD_BENCHMARKS=OFF -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
     BUILD_COMMAND make -C build -j4
     INSTALL_COMMAND make -C build install
 )
@@ -64,7 +64,7 @@ ExternalProject_Add(libjsoncpp
 
 ExternalProject_Add(libboringssl
     EXCLUDE_FROM_ALL 1
-    GIT_REPOSITORY https://gitee.com/jbl19860422/boringssl.git
+    GIT_REPOSITORY https://github.com/google/boringssl.git
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-overflow" -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
     BUILD_COMMAND make -C build -j4
@@ -76,7 +76,7 @@ INCLUDE_DIRECTORIES(${MMS_SOURCE_DIR}/third_src/spdlog/include)
 ExternalProject_Add(libzlib
     EXCLUDE_FROM_ALL 1
     BUILD_IN_SOURCE 1
-    GIT_REPOSITORY https://gitee.com/jbl19860422/zlib
+    GIT_REPOSITORY https://github.com/madler/zlib.git
     GIT_TAG v1.2.13
     CONFIGURE_COMMAND cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
     BUILD_COMMAND make -C build -j4
@@ -94,7 +94,7 @@ ExternalProject_Add(libopus
 
 ExternalProject_Add(libaac
     EXCLUDE_FROM_ALL 1
-    GIT_REPOSITORY https://gitee.com/jbl19860422/faac.git
+    GIT_REPOSITORY https://github.com/knik0/faac.git
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./bootstrap --prefix=${PROJECT_BINARY_DIR} && ./configure
     BUILD_COMMAND make -j4
@@ -103,7 +103,7 @@ ExternalProject_Add(libaac
 
 ExternalProject_Add(libfaad2
     EXCLUDE_FROM_ALL 1
-    GIT_REPOSITORY https://gitee.com/jbl19860422/faad2.git
+    GIT_REPOSITORY https://github.com/knik0/faad2.git
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND cmake . -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR} -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
     BUILD_COMMAND make -j4
@@ -112,7 +112,7 @@ ExternalProject_Add(libfaad2
 
 ExternalProject_Add(libav-5.1.4
     EXCLUDE_FROM_ALL 1
-    GIT_REPOSITORY https://gitee.com/mirrors/ffmpeg.git
+    GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git
     GIT_TAG n5.1.4
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./configure --disable-programs --prefix=${PROJECT_BINARY_DIR}
@@ -128,3 +128,4 @@ ExternalProject_Add(libsrtp
     BUILD_COMMAND make -j4
     INSTALL_COMMAND make install
 )
+
