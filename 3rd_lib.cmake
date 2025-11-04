@@ -96,7 +96,7 @@ ExternalProject_Add(libaac
     EXCLUDE_FROM_ALL 1
     GIT_REPOSITORY https://github.com/knik0/faac.git
     BUILD_IN_SOURCE 1
-    CONFIGURE_COMMAND ./bootstrap --prefix=${PROJECT_BINARY_DIR} && ./configure
+    CONFIGURE_COMMAND ./bootstrap --prefix=${PROJECT_BINARY_DIR} && ./configure --prefix=${PROJECT_BINARY_DIR}
     BUILD_COMMAND make -j4
     INSTALL_COMMAND make -j4 install
 )
@@ -128,4 +128,5 @@ ExternalProject_Add(libsrtp
     BUILD_COMMAND make -j4
     INSTALL_COMMAND make install
 )
+
 
